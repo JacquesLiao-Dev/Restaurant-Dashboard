@@ -5,9 +5,10 @@ import {
   DialogsShowcase,
   DropdownsShowcase,
   FormFieldsShowcase,
-  NavigationShowcase,
+  SidebarShowcase,
   TablesListsShowcase,
   TabsShowcase,
+  TopbarShowcase,
   TooltipsShowcase,
 } from "@/components/design-system/component-library-demos";
 import { ComponentPreview } from "@/components/design-system/component-preview";
@@ -31,7 +32,7 @@ export function ComponentsPageContent() {
         title="Bibliothèque de composants"
       />
 
-      <div className="grid gap-6 xl:grid-cols-2">
+      <div className="space-y-6 xl:columns-2 xl:gap-6 xl:space-y-0">
         <ComponentPreview
           description="Les boutons couvrent les variantes produit, les tailles et tous les états à prévoir dans les flux du dashboard."
           guidelines={buttonVariants.map((item) => `${item.name} : ${item.usage}`)}
@@ -121,7 +122,28 @@ export function ComponentsPageContent() {
         />
 
         <ComponentPreview
-          className="xl:col-span-2"
+          description="La sidebar structure les sections principales, les sous-rubriques et les raccourcis persistants du dashboard."
+          guidelines={[
+            "Conserver une hiérarchie stable entre groupe parent et sous-pages.",
+            "Afficher l'état actif sans dépendre uniquement du hover.",
+            "Réserver le bas de sidebar à un scope ou une aide utile.",
+          ]}
+          preview={<SidebarShowcase />}
+          title="Sidebar"
+        />
+
+        <ComponentPreview
+          description="Le topbar rappelle le contexte courant et regroupe les actions globales sans alourdir la lecture."
+          guidelines={[
+            "Limiter les actions visibles aux raccourcis réellement globaux.",
+            "Garder le titre courant lisible même sur mobile.",
+            "Éviter les blocs décoratifs inutiles dans cet espace.",
+          ]}
+          preview={<TopbarShowcase />}
+          title="Topbar"
+        />
+
+        <ComponentPreview
           description="Les tables et listes montrent comment présenter des données denses sans perdre en lisibilité ni en responsive."
           guidelines={[
             "Sur mobile, prévoir un fallback carte ou un overflow maîtrisé.",
@@ -130,18 +152,6 @@ export function ComponentsPageContent() {
           ]}
           preview={<TablesListsShowcase />}
           title="Tables et listes"
-        />
-
-        <ComponentPreview
-          className="xl:col-span-2"
-          description="La navigation combine une sidebar hiérarchique et un topbar de contexte. Ces deux patterns structurent tout le dashboard."
-          guidelines={[
-            "La sidebar porte les sections principales et leurs sous-rubriques.",
-            "Le topbar rappelle le contexte courant et les actions globales.",
-            "Conserver la même hiérarchie visuelle sur desktop et mobile.",
-          ]}
-          preview={<NavigationShowcase />}
-          title="Navigation"
         />
 
         <ComponentPreview

@@ -19,7 +19,7 @@ export function ComponentPreview({
   title,
 }: ComponentPreviewProps) {
   return (
-    <Card className={cn("overflow-hidden border-white/80 bg-white/92", className)}>
+    <Card className={cn("overflow-hidden border-white/80 bg-white/92 break-inside-avoid xl:mb-6 xl:inline-block xl:w-full", className)}>
       <CardHeader>
         <CardTitle>{title}</CardTitle>
         <CardDescription>{description}</CardDescription>

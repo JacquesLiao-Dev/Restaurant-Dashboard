@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 
 import { DeleteConfirmationDemo, ModalDemo } from "@/components/design-system/interaction-demos";
+export { SidebarShowcase } from "@/components/design-system/sidebar-showcase";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -268,66 +269,35 @@ export function TablesListsShowcase() {
   );
 }
 
-export function NavigationShowcase() {
+export function TopbarShowcase() {
   return (
-    <div className="overflow-hidden rounded-lg border border-border/70 bg-[#fffaf6]">
-      <div className="grid min-h-[320px] lg:grid-cols-[220px_1fr]">
-        <aside className="flex flex-col gap-5 border-b border-white/80 bg-[#fffaf6] p-4 md:border-b-0 md:border-r">
-          <div>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-primary">Restaurant SaaS</p>
-            <h3 className="mt-2 text-h3 text-foreground">Fondation UI</h3>
-            <p className="mt-1 text-body-sm text-muted-foreground">Shell principal pour la navigation et le contexte de page.</p>
-          </div>
-
-          <div className="space-y-2">
-            <div className="rounded-md bg-primary px-3 py-2.5 text-body-sm font-semibold text-primary-foreground shadow-soft">
-              Système
-            </div>
-            <div className="ml-4 space-y-1 border-l border-primary/15 pl-3">
-              <div className="rounded-md border border-primary/20 bg-primary/12 px-3 py-2 text-body-sm font-semibold text-primary">
-                Composants
-              </div>
-              <div className="rounded-md px-3 py-2 text-body-sm text-foreground/80">Fondations</div>
-              <div className="rounded-md px-3 py-2 text-body-sm text-foreground/80">Accessibilité</div>
-            </div>
-          </div>
-
-          <div className="mt-auto rounded-lg border border-primary/10 bg-primary/5 p-3">
-            <p className="text-label text-foreground">Bloc latéral</p>
-            <p className="mt-1 text-body-sm text-muted-foreground">
-              Réserver cet espace à une aide courte, un scope ou une action persistante.
-            </p>
-          </div>
-        </aside>
-
-        <div className="min-w-0 bg-background/90">
-          <div className="flex flex-col gap-3 border-b border-white/70 bg-background/80 px-4 py-3 backdrop-blur sm:flex-row sm:items-center sm:justify-between">
-            <div className="min-w-0">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-primary">samedi 9 mai</p>
-              <p className="text-body font-semibold text-foreground">Composants</p>
-            </div>
-            <div className="flex w-full items-center justify-between gap-2 sm:w-auto sm:justify-end">
-              <Button aria-label="Rechercher" size="icon" variant="ghost">
-                <Search className="h-4 w-4" />
-              </Button>
-              <Button size="sm" variant="outline">
-                <Plus className="h-4 w-4" />
-                Ajouter
-              </Button>
-            </div>
-          </div>
-
-          <div className="grid gap-3 p-4 sm:grid-cols-2">
-            <Card className="p-4" variant="metric">
-              <p className="text-body-sm text-muted-foreground">Commandes du jour</p>
-              <p className="mt-3 text-h2 text-foreground">42</p>
-            </Card>
-            <Card className="p-4" variant="default">
-              <p className="text-body-sm text-muted-foreground">Panier moyen</p>
-              <p className="mt-3 text-h2 text-foreground">28 €</p>
-            </Card>
-          </div>
+    <div className="overflow-hidden rounded-lg border border-border/70 bg-background/85">
+      <div className="flex flex-col gap-3 border-b border-white/70 bg-background/92 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="min-w-0">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-primary">Contexte de page</p>
+          <p className="text-body font-semibold text-foreground">Composants</p>
         </div>
+
+        <div className="flex w-full items-center justify-between gap-2 sm:w-auto sm:justify-end">
+          <Button aria-label="Rechercher" size="icon" variant="ghost">
+            <Search className="h-4 w-4" />
+          </Button>
+          <Button size="sm" variant="outline">
+            <Plus className="h-4 w-4" />
+            Ajouter
+          </Button>
+        </div>
+      </div>
+
+      <div className="grid gap-3 p-4 sm:grid-cols-2">
+        <Card className="p-4" variant="metric">
+          <p className="text-body-sm text-muted-foreground">Commandes du jour</p>
+          <p className="mt-3 text-h2 text-foreground">42</p>
+        </Card>
+        <Card className="p-4" variant="default">
+          <p className="text-body-sm text-muted-foreground">Panier moyen</p>
+          <p className="mt-3 text-h2 text-foreground">28 €</p>
+        </Card>
       </div>
     </div>
   );
