@@ -5,6 +5,7 @@ import { Mail, Phone, Plus, RefreshCcw, Search, Trash2 } from "lucide-react";
 
 import { ConfirmDialog } from "@/components/dashboard/confirm-dialog";
 import { DashboardPageHeader } from "@/components/dashboard/page-header";
+import { StatCard } from "@/components/dashboard/stat-card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -205,18 +206,9 @@ export function CustomersPageClient() {
       />
 
       <div className="grid gap-4 md:grid-cols-3">
-        <Card className="p-5">
-          <p className="text-body-sm text-muted-foreground">Clients visibles</p>
-          <p className="mt-3 text-h2 text-foreground">{customers.length}</p>
-        </Card>
-        <Card className="p-5">
-          <p className="text-body-sm text-muted-foreground">Profils VIP</p>
-          <p className="mt-3 text-h2 text-foreground">{vipCount}</p>
-        </Card>
-        <Card className="p-5">
-          <p className="text-body-sm text-muted-foreground">Actifs ou nouveaux</p>
-          <p className="mt-3 text-h2 text-foreground">{newCount + activeCount}</p>
-        </Card>
+        <StatCard label="Clients visibles" value={customers.length} />
+        <StatCard label="Profils VIP" value={vipCount} />
+        <StatCard label="Actifs ou nouveaux" value={newCount + activeCount} />
       </div>
 
       <Card className="p-5">

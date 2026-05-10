@@ -7,8 +7,41 @@ Le projet est organisé en monorepo :
 - `frontend/` : Next.js, TypeScript, Tailwind CSS
 - `backend/` : Node.js, Express, TypeScript
 
-Le frontend sert actuellement de fondation UI avec un design system documenté.  
-Le backend expose une API légère avec des données mockées en mémoire pour simuler les domaines `customers`, `orders`, `menu` et `settings`.
+L’objectif de cette itération est de montrer :
+
+- une UI premium et cohérente
+- un design system documenté et réutilisable
+- des pages métier crédibles
+- une communication frontend/backend claire
+- une structure lisible et maintenable
+
+## Démo actuelle
+
+Le projet contient aujourd’hui :
+
+- `Home` : vue d’ensemble, métriques, graphiques interactifs, top menus, top clients
+- `CRM` : liste clients, recherche, édition, création, suppression, pagination
+- `Orders` : liste commandes, filtres, pagination, création de commande avec sélection d’items
+- `Menu` : catalogue menu, création/édition/suppression, upload d’image locale
+- `Settings` : informations restaurant, notifications, préférences, horaires
+- `Design System` : fondations, composants, patterns UX, accessibilité, règles d’usage
+
+## Important
+
+La stack cible du brief inclut PostgreSQL.
+
+Cette branche du projet utilise volontairement un backend **mocké en mémoire** pour prioriser :
+
+- l’expérience produit
+- la qualité UI
+- la structure fullstack
+- la rapidité d’exécution du test
+
+Conséquences :
+
+- aucun serveur PostgreSQL n’est nécessaire pour tester le projet
+- les données API sont remises à zéro au redémarrage du backend
+- les images uploadées côté menu sont enregistrées localement dans `frontend/public/images/menu`
 
 ## Stack
 
@@ -30,31 +63,6 @@ Le backend expose une API légère avec des données mockées en mémoire pour s
 - Zod
 - Pino
 
-## État actuel du projet
-
-### Inclus
-
-- shell dashboard responsive
-- design system documenté
-- bibliothèque de composants UI
-- routes backend mockées
-- endpoints REST de base
-
-### Non inclus pour l’instant
-
-- authentification
-- persistance PostgreSQL branchée
-- pages métier finales `Home`, `CRM`, `Orders`, `Menu`, `Settings`
-
-## Note PostgreSQL
-
-La stack cible du test inclut PostgreSQL, mais cette itération du projet utilise volontairement des données mockées en mémoire côté backend.
-
-Conséquence :
-
-- aucun serveur PostgreSQL n’est requis pour lancer le projet aujourd’hui
-- la documentation ci-dessous permet de lancer et tester l’application telle qu’elle existe réellement
-
 ## Prérequis
 
 - Node.js `>= 20.19.0`
@@ -73,6 +81,11 @@ Depuis la racine du projet :
 ```bash
 npm install
 ```
+
+Important :
+
+- lancer `npm install` depuis la racine
+- ne pas installer séparément dans `frontend/` ou `backend/`
 
 ## Variables d’environnement
 
@@ -110,8 +123,6 @@ FRONTEND_URL=http://localhost:3000
 
 ### Frontend + backend ensemble
 
-Depuis la racine :
-
 ```bash
 npm run dev
 ```
@@ -131,38 +142,53 @@ npm run dev:backend
 ## URLs utiles
 
 - frontend : `http://localhost:3000`
+- home : `http://localhost:3000/home`
+- crm : `http://localhost:3000/customers`
+- orders : `http://localhost:3000/orders`
+- menu : `http://localhost:3000/menu`
+- settings : `http://localhost:3000/settings`
 - design system : `http://localhost:3000/design-system`
 - backend : `http://localhost:4000`
 - healthcheck : `http://localhost:4000/api/health`
 
-## Vérifications utiles
+## Commandes utiles
+
+### Typecheck + lint
 
 ```bash
-npm run typecheck
-npm run lint
 npm run check
 ```
 
-## Build de production
-
-### Frontend
+### Typecheck uniquement
 
 ```bash
-npm run build -w frontend
-npm run start -w frontend
+npm run typecheck
 ```
 
-### Backend
+### Lint uniquement
 
 ```bash
-npm run build -w backend
-npm run start -w backend
+npm run lint
 ```
 
 ### Build complet
 
 ```bash
 npm run build
+```
+
+### Build frontend
+
+```bash
+npm run build -w frontend
+npm run start -w frontend
+```
+
+### Build backend
+
+```bash
+npm run build -w backend
+npm run start -w backend
 ```
 
 ## Endpoints backend
@@ -199,7 +225,7 @@ npm run build
 - `GET /api/settings`
 - `PUT /api/settings`
 
-## Structure
+## Structure du projet
 
 ```text
 restaurant-dashboard/
@@ -220,13 +246,26 @@ restaurant-dashboard/
 │   └── tsconfig.json
 ├── frontend/
 │   ├── public/
+│   │   └── images/
+│   │       └── menu/
 │   ├── src/
 │   │   ├── app/
 │   │   ├── components/
-│   │   ├── lib/
-│   │   │   ├── constants/
+│   │   │   ├── dashboard/
 │   │   │   ├── design-system/
-│   │   │   └── utils/
+│   │   │   ├── layout/
+│   │   │   └── ui/
+│   │   ├── features/
+│   │   │   ├── customers/
+│   │   │   ├── home/
+│   │   │   ├── menu/
+│   │   │   ├── orders/
+│   │   │   └── settings/
+│   │   └── lib/
+│   │       ├── api/
+│   │       ├── constants/
+│   │       ├── design-system/
+│   │       └── utils/
 │   ├── .env.example
 │   ├── package.json
 │   ├── tailwind.config.ts
@@ -241,13 +280,18 @@ restaurant-dashboard/
 Le design system documenté couvre :
 
 - fondations : couleurs, spacing, radius, shadows, typography, motion, layout
-- composants : buttons, badges, cards, inputs, selects, dropdowns, dialogs, tables, tabs, tooltips
+- composants : boutons, badges, cards, inputs, selects, dropdowns, dialogs, tables, pagination, tabs, tooltips, toasts
+- composants dashboard : page header, metric cards, stat cards, inset cards, toggle rows, menu item image, charts
 - patterns UX : loading, empty, error, confirmation, feedback
 - accessibilité : focus visible, labels, contraste, navigation clavier
 - règles d’usage : choix des patterns, gouvernance et réutilisation
 
-## Points d’attention
+## Suite possible
 
-- lancer `npm install` depuis la racine, pas depuis `frontend/` ou `backend/`
-- le backend actuel est mocké, donc aucun setup PostgreSQL n’est nécessaire pour tester le projet
-- le build frontend utilise `next/font/google` pour `Manrope`, donc une connexion réseau peut être nécessaire lors du build
+Si le projet devait être prolongé, les prochaines étapes naturelles seraient :
+
+- brancher PostgreSQL réellement
+- ajouter une couche de validation plus riche côté backend
+- ajouter React Query ou équivalent pour gérer le cache serveur
+- couvrir les flows critiques par tests
+- ajouter une authentification simple et des rôles

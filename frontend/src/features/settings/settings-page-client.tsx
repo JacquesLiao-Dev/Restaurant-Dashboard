@@ -8,10 +8,12 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ErrorState } from "@/components/ui/error-state";
+import { InsetCard } from "@/components/ui/inset-card";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Switch } from "@/components/ui/switch";
+import { ToggleRow } from "@/components/ui/toggle-row";
 import { getSettings, updateSettings } from "@/lib/api";
 import { notify } from "@/lib/design-system/notify";
 import type { RestaurantSettings } from "@/lib/api";
@@ -27,6 +29,37 @@ const timeOptions = Array.from({ length: 48 }, (_, index) => {
     value,
   };
 });
+
+const notificationItems = [
+  {
+    key: "newOrders" as const,
+    title: "Nouvelles commandes",
+    description: "Alerte immédiate lorsqu’une commande entre dans le flux.",
+  },
+  {
+    key: "dailySummary" as const,
+    title: "Résumé quotidien",
+    description: "Bilan synthétique de l’activité en fin de journée.",
+  },
+  {
+    key: "lowStockAlerts" as const,
+    title: "Alertes stock bas",
+    description: "Rappels opérationnels pour les items critiques du menu.",
+  },
+] as const;
+
+const preferenceItems = [
+  {
+    key: "compactMode" as const,
+    title: "Mode compact",
+    description: "Réduit les respirations pour une lecture plus dense des listes.",
+  },
+  {
+    key: "showRevenue" as const,
+    title: "Afficher le chiffre d’affaires",
+    description: "Garde le CA visible sur Home et dans les cartes métriques.",
+  },
+] as const;
 
 export function SettingsPageClient() {
   const [initialSettings, setInitialSettings] = useState<RestaurantSettings | null>(null);
@@ -52,6 +85,51 @@ export function SettingsPageClient() {
   useEffect(() => {
     loadSettings();
   }, []);
+
+  function updateField<Key extends keyof RestaurantSettings>(key: Key, value: RestaurantSettings[Key]) {
+    setDraft((current) => (current ? { ...current, [key]: value } : current));
+  }
+
+  function updateNotification(key: keyof RestaurantSettings["notifications"], checked: boolean) {
+    setDraft((current) =>
+      current
+        ? {
+            ...current,
+            notifications: {
+              ...current.notifications,
+              [key]: checked,
+            },
+          }
+        : current,
+    );
+  }
+
+  function updatePreference(key: keyof RestaurantSettings["preferences"], checked: boolean) {
+    setDraft((current) =>
+      current
+        ? {
+            ...current,
+            preferences: {
+              ...current.preferences,
+              [key]: checked,
+            },
+          }
+        : current,
+    );
+  }
+
+  function updateOpeningHour(index: number, field: "open" | "close" | "closed", value: string | boolean) {
+    setDraft((current) =>
+      current
+        ? {
+            ...current,
+            openingHours: current.openingHours.map((item, itemIndex) =>
+              itemIndex === index ? { ...item, [field]: value } : item,
+            ),
+          }
+        : current,
+    );
+  }
 
   async function handleSave() {
     if (!draft) {
@@ -144,31 +222,23 @@ export function SettingsPageClient() {
           <div className="mt-5 grid gap-4">
             <Input
               label="Nom du restaurant"
-              onChange={(event) =>
-                setDraft((current) => (current ? { ...current, restaurantName: event.target.value } : current))
-              }
+              onChange={(event) => updateField("restaurantName", event.target.value)}
               value={draft.restaurantName}
             />
             <Input
               label="Adresse e-mail"
-              onChange={(event) =>
-                setDraft((current) => (current ? { ...current, contactEmail: event.target.value } : current))
-              }
+              onChange={(event) => updateField("contactEmail", event.target.value)}
               type="email"
               value={draft.contactEmail}
             />
             <Input
               label="Téléphone"
-              onChange={(event) =>
-                setDraft((current) => (current ? { ...current, phone: event.target.value } : current))
-              }
+              onChange={(event) => updateField("phone", event.target.value)}
               value={draft.phone}
             />
             <Input
               label="Adresse"
-              onChange={(event) =>
-                setDraft((current) => (current ? { ...current, address: event.target.value } : current))
-              }
+              onChange={(event) => updateField("address", event.target.value)}
               value={draft.address}
             />
           </div>
@@ -183,48 +253,14 @@ export function SettingsPageClient() {
               </p>
             </div>
             <div className="mt-5 space-y-3">
-              {[
-                {
-                  key: "newOrders" as const,
-                  title: "Nouvelles commandes",
-                  description: "Alerte immédiate lorsqu’une commande entre dans le flux.",
-                },
-                {
-                  key: "dailySummary" as const,
-                  title: "Résumé quotidien",
-                  description: "Bilan synthétique de l’activité en fin de journée.",
-                },
-                {
-                  key: "lowStockAlerts" as const,
-                  title: "Alertes stock bas",
-                  description: "Rappels opérationnels pour les items critiques du menu.",
-                },
-              ].map((item) => (
-                <div
-                  className="flex items-center justify-between gap-4 rounded-lg border border-border/60 bg-background/60 px-4 py-3"
+              {notificationItems.map((item) => (
+                <ToggleRow
+                  checked={draft.notifications[item.key]}
+                  description={item.description}
                   key={item.key}
-                >
-                  <div>
-                    <p className="text-label text-foreground">{item.title}</p>
-                    <p className="text-body-sm text-muted-foreground">{item.description}</p>
-                  </div>
-                  <Switch
-                    checked={draft.notifications[item.key]}
-                    onCheckedChange={(checked) =>
-                      setDraft((current) =>
-                        current
-                          ? {
-                              ...current,
-                              notifications: {
-                                ...current.notifications,
-                                [item.key]: checked,
-                              },
-                            }
-                          : current,
-                      )
-                    }
-                  />
-                </div>
+                  onCheckedChange={(checked) => updateNotification(item.key, checked)}
+                  title={item.title}
+                />
               ))}
             </div>
           </Card>
@@ -237,43 +273,14 @@ export function SettingsPageClient() {
               </p>
             </div>
             <div className="mt-5 space-y-3">
-              {[
-                {
-                  key: "compactMode" as const,
-                  title: "Mode compact",
-                  description: "Réduit les respirations pour une lecture plus dense des listes.",
-                },
-                {
-                  key: "showRevenue" as const,
-                  title: "Afficher le chiffre d’affaires",
-                  description: "Garde le CA visible sur Home et dans les cartes métriques.",
-                },
-              ].map((item) => (
-                <div
-                  className="flex items-center justify-between gap-4 rounded-lg border border-border/60 bg-background/60 px-4 py-3"
+              {preferenceItems.map((item) => (
+                <ToggleRow
+                  checked={draft.preferences[item.key]}
+                  description={item.description}
                   key={item.key}
-                >
-                  <div>
-                    <p className="text-label text-foreground">{item.title}</p>
-                    <p className="text-body-sm text-muted-foreground">{item.description}</p>
-                  </div>
-                  <Switch
-                    checked={draft.preferences[item.key]}
-                    onCheckedChange={(checked) =>
-                      setDraft((current) =>
-                        current
-                          ? {
-                              ...current,
-                              preferences: {
-                                ...current.preferences,
-                                [item.key]: checked,
-                              },
-                            }
-                          : current,
-                      )
-                    }
-                  />
-                </div>
+                  onCheckedChange={(checked) => updatePreference(item.key, checked)}
+                  title={item.title}
+                />
               ))}
             </div>
           </Card>
@@ -293,9 +300,10 @@ export function SettingsPageClient() {
 
         <div className="mt-5 grid gap-3">
           {draft.openingHours.map((openingHour, index) => (
-            <div
-              className="grid gap-4 rounded-lg border border-border/60 bg-background/60 p-4 lg:grid-cols-[120px_1fr_1fr_180px]"
+            <InsetCard
+              className="grid gap-4 lg:grid-cols-[120px_1fr_1fr_180px]"
               key={openingHour.day}
+              tone="subtle"
             >
               <div className="flex items-center">
                 <p className="text-label text-foreground">{openingHour.day}</p>
@@ -303,36 +311,14 @@ export function SettingsPageClient() {
               <Select
                 disabled={openingHour.closed}
                 label="Ouverture"
-                onValueChange={(value) =>
-                  setDraft((current) =>
-                    current
-                      ? {
-                          ...current,
-                          openingHours: current.openingHours.map((item, itemIndex) =>
-                            itemIndex === index ? { ...item, open: value } : item,
-                          ),
-                        }
-                      : current,
-                  )
-                }
+                onValueChange={(value) => updateOpeningHour(index, "open", value)}
                 options={timeOptions}
                 value={openingHour.open}
               />
               <Select
                 disabled={openingHour.closed}
                 label="Fermeture"
-                onValueChange={(value) =>
-                  setDraft((current) =>
-                    current
-                      ? {
-                          ...current,
-                          openingHours: current.openingHours.map((item, itemIndex) =>
-                            itemIndex === index ? { ...item, close: value } : item,
-                          ),
-                        }
-                      : current,
-                  )
-                }
+                onValueChange={(value) => updateOpeningHour(index, "close", value)}
                 options={timeOptions}
                 value={openingHour.close}
               />
@@ -342,22 +328,11 @@ export function SettingsPageClient() {
                   <p className="text-label text-foreground">Fermé</p>
                   <Switch
                     checked={openingHour.closed}
-                    onCheckedChange={(checked) =>
-                      setDraft((current) =>
-                        current
-                          ? {
-                              ...current,
-                              openingHours: current.openingHours.map((item, itemIndex) =>
-                                itemIndex === index ? { ...item, closed: checked } : item,
-                              ),
-                            }
-                          : current,
-                      )
-                    }
+                    onCheckedChange={(checked) => updateOpeningHour(index, "closed", checked)}
                   />
                 </div>
               </div>
-            </div>
+            </InsetCard>
           ))}
         </div>
       </Card>

@@ -15,8 +15,8 @@ import { MenuItemImage } from "@/components/dashboard/menu-item-image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
+import { ToggleRow } from "@/components/ui/toggle-row";
 import type { CreateMenuItemInput, MenuImageUploadInput, MenuItem } from "@/lib/api";
 import { menuCategoryOptions } from "@/lib/domain/constants";
 
@@ -75,6 +75,13 @@ export function MenuItemDialog({
       setImagePreview(item?.imageUrl ?? null);
     }
   }, [item, open]);
+
+  function updateField<Key extends keyof MenuFormState>(key: Key, value: MenuFormState[Key]) {
+    setForm((current) => ({
+      ...current,
+      [key]: value,
+    }));
+  }
 
   async function handleImageSelection(file: File | null) {
     if (!file) {
@@ -159,14 +166,14 @@ export function MenuItemDialog({
           <DialogBody className="space-y-4">
             <Input
               label="Nom du plat"
-              onChange={(event) => setForm((current) => ({ ...current, name: event.target.value }))}
+              onChange={(event) => updateField("name", event.target.value)}
               placeholder="Tataki de saumon"
               required
               value={form.name}
             />
             <Textarea
               label="Description"
-              onChange={(event) => setForm((current) => ({ ...current, description: event.target.value }))}
+              onChange={(event) => updateField("description", event.target.value)}
               placeholder="Description courte du plat"
               required
               value={form.description}
@@ -174,14 +181,14 @@ export function MenuItemDialog({
             <div className="grid gap-4 sm:grid-cols-2">
               <Select
                 label="Catégorie"
-                onValueChange={(value) => setForm((current) => ({ ...current, category: value as CreateMenuItemInput["category"] }))}
+                onValueChange={(value) => updateField("category", value as CreateMenuItemInput["category"])}
                 options={menuCategoryOptions}
                 value={form.category}
               />
               <Input
                 label="Prix"
                 min="1"
-                onChange={(event) => setForm((current) => ({ ...current, price: Number(event.target.value) }))}
+                onChange={(event) => updateField("price", Number(event.target.value))}
                 required
                 step="0.01"
                 type="number"
@@ -192,7 +199,7 @@ export function MenuItemDialog({
               <div>
                 <p className="text-label text-foreground">Image locale</p>
                 <p className="text-body-sm text-muted-foreground">
-                  PNG, JPG/JPEG ou WEBP, 4 Mo maximum. PNG de préférence pour l'affichage.
+                  PNG, JPG/JPEG ou WEBP, 4 Mo maximum. PNG de préférence pour l&apos;affichage.
                 </p>
               </div>
               <input
@@ -217,13 +224,12 @@ export function MenuItemDialog({
                 src={imagePreview}
               />
             ) : null}
-            <div className="flex items-center justify-between rounded-lg border border-border/70 bg-background/60 px-4 py-3">
-              <div>
-                <p className="text-label text-foreground">Disponible à la vente</p>
-                <p className="text-body-sm text-muted-foreground">Active ou retire temporairement l’item de la carte.</p>
-              </div>
-              <Switch checked={form.available} onCheckedChange={(checked) => setForm((current) => ({ ...current, available: checked }))} />
-            </div>
+            <ToggleRow
+              checked={form.available}
+              description="Active ou retire temporairement l’item de la carte."
+              onCheckedChange={(checked) => updateField("available", checked)}
+              title="Disponible à la vente"
+            />
           </DialogBody>
 
           <DialogFooter className="border-t border-border/60 pt-4">
