@@ -14,7 +14,7 @@ const DropdownMenuSub = DropdownMenuPrimitive.Sub;
 const DropdownMenuRadioGroup = DropdownMenuPrimitive.RadioGroup;
 
 const dropdownMenuContentStyles =
-  "z-overlay min-w-[12rem] overflow-hidden rounded-lg border border-border/80 bg-white p-1.5 text-foreground shadow-floating animate-fade-in";
+  "z-overlay min-w-[12rem] max-h-[18rem] overflow-y-auto overscroll-contain rounded-lg border border-border/80 bg-white p-1.5 text-foreground shadow-floating animate-fade-in";
 const dropdownMenuItemStyles =
   "relative flex cursor-default select-none items-center gap-2 rounded-md px-3 py-2.5 text-body-sm outline-none transition duration-fast ease-expressive data-[disabled]:pointer-events-none data-[disabled]:opacity-40 data-[highlighted]:bg-accent data-[highlighted]:text-foreground";
 

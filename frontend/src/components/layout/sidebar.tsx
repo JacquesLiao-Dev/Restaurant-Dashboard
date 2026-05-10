@@ -1,9 +1,10 @@
 "use client";
 
-import { X } from "lucide-react";
+import { useEffect, useState } from "react";
 
+import { SidebarPanel } from "@/components/layout/sidebar-panel";
+import { getSettings } from "@/lib/api";
 import { navigationItems } from "@/lib/constants/navigation";
-import { SidebarNav } from "@/components/layout/sidebar-nav";
 import { cn } from "@/lib/utils/cn";
 
 type SidebarProps = {
@@ -13,6 +14,41 @@ type SidebarProps = {
 };
 
 export function Sidebar({ isOpen, onClose, pathname }: SidebarProps) {
+  const [restaurantName, setRestaurantName] = useState("Restaurant");
+
+  useEffect(() => {
+    let isMounted = true;
+
+    async function loadSettings() {
+      try {
+        const settings = await getSettings();
+
+        if (isMounted) {
+          setRestaurantName(settings.restaurantName);
+        }
+      } catch {
+        // Keep a stable fallback label if the settings endpoint is unavailable.
+      }
+    }
+
+    loadSettings();
+
+    function handleSettingsUpdated(event: Event) {
+      const detail = (event as CustomEvent<{ restaurantName?: string }>).detail;
+
+      if (isMounted && detail?.restaurantName) {
+        setRestaurantName(detail.restaurantName);
+      }
+    }
+
+    window.addEventListener("restaurant-settings-updated", handleSettingsUpdated);
+
+    return () => {
+      isMounted = false;
+      window.removeEventListener("restaurant-settings-updated", handleSettingsUpdated);
+    };
+  }, []);
+
   return (
     <>
       <div
@@ -30,23 +66,16 @@ export function Sidebar({ isOpen, onClose, pathname }: SidebarProps) {
           isOpen ? "translate-x-0" : "-translate-x-full",
         )}
       >
-        <div className="mb-8 flex items-start justify-between">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-primary">Restaurant SaaS</p>
-            <h1 className="mt-2 text-2xl font-semibold tracking-tight">Système de design</h1>
-          </div>
-
-          <button
-            type="button"
-            aria-label="Fermer le menu"
-            className="rounded-md p-2 text-muted-foreground transition hover:bg-accent lg:hidden"
-            onClick={onClose}
-          >
-            <X className="h-5 w-5" />
-          </button>
-        </div>
-
-        <SidebarNav items={navigationItems} onNavigate={onClose} pathname={pathname} />
+        <SidebarPanel
+          eyebrow="Restaurant SaaS"
+          description="Dashboard restaurant"
+          items={navigationItems}
+          onClose={onClose}
+          onNavigate={onClose}
+          pathname={pathname}
+          showCloseButton
+          title={restaurantName}
+        />
       </aside>
     </>
   );

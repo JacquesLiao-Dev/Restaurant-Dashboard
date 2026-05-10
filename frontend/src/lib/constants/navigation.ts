@@ -1,5 +1,5 @@
 import type { LucideIcon } from "lucide-react";
-import { Palette } from "lucide-react";
+import { House, Palette, Settings2, ShoppingBag, Soup, Users } from "lucide-react";
 import { sectionLinks } from "@/lib/design-system";
 
 export type NavigationChild = {
@@ -15,6 +15,31 @@ export type NavigationItem = {
 };
 
 export const navigationItems: NavigationItem[] = [
+  {
+    href: "/home",
+    label: "Accueil",
+    icon: House,
+  },
+  {
+    href: "/customers",
+    label: "CRM",
+    icon: Users,
+  },
+  {
+    href: "/orders",
+    label: "Commandes",
+    icon: ShoppingBag,
+  },
+  {
+    href: "/menu",
+    label: "Menu",
+    icon: Soup,
+  },
+  {
+    href: "/settings",
+    label: "Paramètres",
+    icon: Settings2,
+  },
   {
     href: "/design-system",
     label: "Système",
@@ -41,5 +66,5 @@ export function getPageTitle(pathname: string) {
     }
   }
 
-  return "Bibliotheque UI";
+  return "Dashboard";
 }

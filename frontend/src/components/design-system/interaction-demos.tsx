@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
+  DialogBody,
   DialogClose,
   DialogContent,
   DialogDescription,
@@ -76,12 +77,13 @@ export function ModalDemo() {
             Une modale convient aux actions courtes qui doivent rester dans le contexte de la page.
           </DialogDescription>
         </DialogHeader>
-        <div className="space-y-4">
+        <DialogBody className="space-y-4">
           <Input hint="Visible dans la fiche client et les commandes." label="Nom complet" placeholder="Camille Laurent" />
           <Input label="Adresse e-mail" placeholder="camille@restaurant.fr" type="email" />
           <Textarea label="Note interne" placeholder="Preferences, allergies ou details de suivi." />
-        </div>
-        <DialogFooter>
+          <Textarea label="Informations complementaires" placeholder="Adresse, preferences de contact, commentaires..." />
+        </DialogBody>
+        <DialogFooter className="border-t border-border/60 pt-4">
           <DialogClose asChild>
             <Button variant="ghost">Annuler</Button>
           </DialogClose>
@@ -113,11 +115,13 @@ export function DeleteConfirmationDemo() {
             Utiliser une confirmation uniquement pour les actions irreversibles ou a forte consequence.
           </DialogDescription>
         </DialogHeader>
-        <div className="rounded-lg border border-error/15 bg-error/5 p-4 text-body-sm text-muted-foreground">
-          Ce client sera retire de la liste visible. Les donnees historiques associees doivent etre preservees ou
-          traitees explicitement par le produit.
-        </div>
-        <DialogFooter>
+        <DialogBody>
+          <div className="rounded-lg border border-error/15 bg-error/5 p-4 text-body-sm text-muted-foreground">
+            Ce client sera retire de la liste visible. Les donnees historiques associees doivent etre preservees ou
+            traitees explicitement par le produit.
+          </div>
+        </DialogBody>
+        <DialogFooter className="border-t border-border/60 pt-4">
           <DialogClose asChild>
             <Button variant="ghost">Annuler</Button>
           </DialogClose>
