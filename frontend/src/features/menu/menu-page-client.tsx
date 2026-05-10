@@ -6,6 +6,7 @@ import { MoreHorizontal, Plus, RefreshCcw } from "lucide-react";
 import { ConfirmDialog } from "@/components/dashboard/confirm-dialog";
 import { MenuItemImage } from "@/components/dashboard/menu-item-image";
 import { DashboardPageHeader } from "@/components/dashboard/page-header";
+import { StatCard } from "@/components/dashboard/stat-card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -20,7 +21,7 @@ import { ErrorState } from "@/components/ui/error-state";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Switch } from "@/components/ui/switch";
+import { ToggleRow } from "@/components/ui/toggle-row";
 import {
   createMenuItem,
   deleteMenuItem,
@@ -181,18 +182,9 @@ export function MenuPageClient() {
       />
 
       <div className="grid gap-4 md:grid-cols-3">
-        <Card className="p-5">
-          <p className="text-body-sm text-muted-foreground">Items visibles</p>
-          <p className="mt-3 text-h2 text-foreground">{availableCount}</p>
-        </Card>
-        <Card className="p-5">
-          <p className="text-body-sm text-muted-foreground">Items masqués</p>
-          <p className="mt-3 text-h2 text-foreground">{hiddenCount}</p>
-        </Card>
-        <Card className="p-5">
-          <p className="text-body-sm text-muted-foreground">Catalogue</p>
-          <p className="mt-3 text-h2 text-foreground">{items.length}</p>
-        </Card>
+        <StatCard label="Items visibles" value={availableCount} />
+        <StatCard label="Items masqués" value={hiddenCount} />
+        <StatCard label="Catalogue" value={items.length} />
       </div>
 
       <Card className="p-5">
@@ -314,13 +306,13 @@ export function MenuPageClient() {
 
               <p className="mt-3 text-body-sm text-muted-foreground">{item.description}</p>
 
-              <div className="mt-5 flex items-center justify-between rounded-lg border border-border/60 bg-background/60 px-4 py-3">
-                <div>
-                  <p className="text-label text-foreground">Disponibilité</p>
-                  <p className="text-body-sm text-muted-foreground">Affiché dans la carte active.</p>
-                </div>
-                <Switch checked={item.available} onCheckedChange={(checked) => handleToggleAvailability(item, checked)} />
-              </div>
+              <ToggleRow
+                checked={item.available}
+                className="mt-5"
+                description="Affiché dans la carte active."
+                onCheckedChange={(checked) => handleToggleAvailability(item, checked)}
+                title="Disponibilité"
+              />
             </Card>
           ))}
         </div>

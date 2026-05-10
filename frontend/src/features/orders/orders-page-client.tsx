@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Eye, Plus, RefreshCcw } from "lucide-react";
 
 import { DashboardPageHeader } from "@/components/dashboard/page-header";
+import { StatCard } from "@/components/dashboard/stat-card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -163,22 +164,10 @@ export function OrdersPageClient() {
       />
 
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-        <Card className="p-5">
-          <p className="text-body-sm text-muted-foreground">En attente</p>
-          <p className="mt-3 text-h2 text-foreground">{pendingCount}</p>
-        </Card>
-        <Card className="p-5">
-          <p className="text-body-sm text-muted-foreground">En préparation</p>
-          <p className="mt-3 text-h2 text-foreground">{preparingCount}</p>
-        </Card>
-        <Card className="p-5">
-          <p className="text-body-sm text-muted-foreground">Prêtes</p>
-          <p className="mt-3 text-h2 text-foreground">{readyCount}</p>
-        </Card>
-        <Card className="p-5">
-          <p className="text-body-sm text-muted-foreground">Livrées</p>
-          <p className="mt-3 text-h2 text-foreground">{deliveredCount}</p>
-        </Card>
+        <StatCard label="En attente" value={pendingCount} />
+        <StatCard label="En préparation" value={preparingCount} />
+        <StatCard label="Prêtes" value={readyCount} />
+        <StatCard label="Livrées" value={deliveredCount} />
       </div>
 
       <Card className="p-5">

@@ -20,6 +20,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { EmptyState } from "@/components/ui/empty-state";
 import { ErrorState } from "@/components/ui/error-state";
+import { InsetCard } from "@/components/ui/inset-card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getDashboardOverview } from "@/lib/api";
@@ -192,7 +193,7 @@ export function HomePageClient() {
           {topMenuItems.length ? (
             <div className="mt-6 max-h-[28rem] space-y-3 overflow-y-auto pr-1">
               {topMenuItems.map((item) => (
-                <div className="rounded-lg border border-border/70 bg-background/60 p-4" key={item.id}>
+                <InsetCard key={item.id}>
                   <div className="flex items-start gap-3">
                     <MenuItemImage
                       alt={item.name}
@@ -217,7 +218,7 @@ export function HomePageClient() {
                       </div>
                     </div>
                   </div>
-                </div>
+                </InsetCard>
               ))}
             </div>
           ) : (
@@ -233,14 +234,14 @@ export function HomePageClient() {
       </div>
 
       <div className="grid items-start gap-6 xl:grid-cols-[0.92fr_1.08fr]">
-        <Card className="self-start p-6">
+        <Card className="self-start p-6 xl:max-h-[43rem]">
           <div className="space-y-1">
             <h2 className="text-h3 text-foreground">Clients les plus actifs</h2>
           </div>
 
-          <div className="mt-6 max-h-[40rem] space-y-3 overflow-y-auto pr-1">
+          <div className="mt-6 max-h-[31.5rem] space-y-3 overflow-y-auto pr-1">
             {topCustomers.map((customer) => (
-              <div className="rounded-lg border border-border/70 bg-background/60 p-4" key={customer.id}>
+              <InsetCard key={customer.id}>
                 <div className="flex items-start justify-between gap-3">
                   <div>
                     <p className="text-label text-foreground">{customer.name}</p>
@@ -256,7 +257,7 @@ export function HomePageClient() {
                   <span className="text-muted-foreground">Revenu généré</span>
                   <span className="font-semibold text-foreground">{formatCurrency(customer.revenue)}</span>
                 </div>
-              </div>
+              </InsetCard>
             ))}
           </div>
         </Card>

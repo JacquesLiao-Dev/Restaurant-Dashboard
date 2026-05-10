@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 
 import {
+  DialogBody,
   Dialog,
   DialogContent,
   DialogDescription,
@@ -81,37 +82,39 @@ export function CustomerFormDialog({
           </DialogDescription>
         </DialogHeader>
 
-        <form className="space-y-4" onSubmit={handleSubmit}>
-          <Input
-            label="Nom complet"
-            onChange={(event) => updateField("name", event.target.value)}
-            placeholder="Camille Laurent"
-            required
-            value={form.name}
-          />
-          <Input
-            label="Adresse e-mail"
-            onChange={(event) => updateField("email", event.target.value)}
-            placeholder="camille@restaurant.fr"
-            required
-            type="email"
-            value={form.email}
-          />
-          <Input
-            label="Téléphone"
-            onChange={(event) => updateField("phone", event.target.value)}
-            placeholder="+33 6 12 34 56 78"
-            required
-            value={form.phone}
-          />
-          <Select
-            label="Statut"
-            onValueChange={(value) => updateField("status", value as CreateCustomerInput["status"])}
-            options={customerStatusOptions}
-            value={form.status}
-          />
+        <form noValidate onSubmit={handleSubmit}>
+          <DialogBody className="space-y-4">
+            <Input
+              label="Nom complet"
+              onChange={(event) => updateField("name", event.target.value)}
+              placeholder="Camille Laurent"
+              required
+              value={form.name}
+            />
+            <Input
+              label="Adresse e-mail"
+              onChange={(event) => updateField("email", event.target.value)}
+              placeholder="camille@restaurant.fr"
+              required
+              type="email"
+              value={form.email}
+            />
+            <Input
+              label="Téléphone"
+              onChange={(event) => updateField("phone", event.target.value)}
+              placeholder="+33 6 12 34 56 78"
+              required
+              value={form.phone}
+            />
+            <Select
+              label="Statut"
+              onValueChange={(value) => updateField("status", value as CreateCustomerInput["status"])}
+              options={customerStatusOptions}
+              value={form.status}
+            />
+          </DialogBody>
 
-          <DialogFooter>
+          <DialogFooter className="border-t border-border/60 pt-4">
             <Button onClick={() => onOpenChange(false)} type="button" variant="ghost">
               Annuler
             </Button>

@@ -10,12 +10,12 @@ import {
   Dialog,
   DialogBody,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { InsetCard } from "@/components/ui/inset-card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { listCustomers, listMenuItems } from "@/lib/api";
 import type { CreateOrderInput, Customer, MenuItem } from "@/lib/api";
@@ -177,15 +177,15 @@ export function OrderFormDialog({
     const normalizedSearch = normalize(customerQuery);
     const source = normalizedSearch
       ? customers.filter((customer) => {
-          const customerStatus = customerStatusLabels[customer.status];
+        const customerStatus = customerStatusLabels[customer.status];
 
-          return (
-            normalize(customer.name).includes(normalizedSearch) ||
-            normalize(customer.email).includes(normalizedSearch) ||
-            normalize(customer.phone).includes(normalizedSearch) ||
-            normalize(customerStatus).includes(normalizedSearch)
-          );
-        })
+        return (
+          normalize(customer.name).includes(normalizedSearch) ||
+          normalize(customer.email).includes(normalizedSearch) ||
+          normalize(customer.phone).includes(normalizedSearch) ||
+          normalize(customerStatus).includes(normalizedSearch)
+        );
+      })
       : customers;
 
     return source.slice(0, 6);
@@ -233,9 +233,6 @@ export function OrderFormDialog({
       <DialogContent className="max-w-6xl">
         <DialogHeader>
           <DialogTitle>Créer une commande</DialogTitle>
-          <DialogDescription>
-            Recherchez les plats disponibles, ajustez les quantités et capturez la date d’achat pour alimenter l’historique.
-          </DialogDescription>
         </DialogHeader>
 
         <form className="flex min-h-0 flex-1 flex-col" noValidate onSubmit={handleSubmit}>
@@ -340,7 +337,7 @@ export function OrderFormDialog({
                       <Skeleton className="h-20 rounded-lg" key={index} />
                     ))
                   ) : menuError ? (
-                    <div className="rounded-lg border border-border/70 bg-background/60 p-4">
+                    <InsetCard>
                       <p className="text-label text-foreground">Catalogue indisponible</p>
                       <p className="mt-1 text-body-sm text-muted-foreground">
                         Impossible de charger les plats disponibles pour la commande.
@@ -349,14 +346,14 @@ export function OrderFormDialog({
                         <RefreshCcw className="h-4 w-4" />
                         Réessayer
                       </Button>
-                    </div>
+                    </InsetCard>
                   ) : filteredMenuItems.length === 0 ? (
-                    <div className="rounded-lg border border-border/70 bg-background/60 p-4">
+                    <InsetCard>
                       <p className="text-label text-foreground">Aucun item trouvé</p>
                       <p className="mt-1 text-body-sm text-muted-foreground">
                         Ajustez la recherche pour afficher d’autres plats du catalogue.
                       </p>
-                    </div>
+                    </InsetCard>
                   ) : (
                     filteredMenuItems.map((item) => {
                       const quantity = getSelectedQuantity(item.id);
@@ -424,33 +421,33 @@ export function OrderFormDialog({
 
                 <div className="mt-4 space-y-3">
                   <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-1">
-                    <div className="rounded-lg border border-border/70 bg-background/60 p-4">
+                    <InsetCard>
                       <p className="text-body-sm text-muted-foreground">Articles</p>
                       <p className="mt-2 text-h3 text-foreground">{totalQuantity}</p>
-                    </div>
-                    <div className="rounded-lg border border-border/70 bg-background/60 p-4">
+                    </InsetCard>
+                    <InsetCard>
                       <p className="text-body-sm text-muted-foreground">Total</p>
                       <p className="mt-2 text-h3 text-foreground">{formatCurrency(totalAmount)}</p>
-                    </div>
+                    </InsetCard>
                   </div>
 
-                  <div className="rounded-lg border border-border/70 bg-background/60 p-4">
+                  <InsetCard>
                     <p className="text-label text-foreground">Historique d’achat</p>
                     <p className="mt-1 text-body-sm text-muted-foreground">
                       {selectedCustomer
                         ? `${selectedCustomer.ordersCount} commande(s) précédentes • dernière activité ${selectedCustomer.lastOrderAt ? new Date(selectedCustomer.lastOrderAt).toLocaleDateString("fr-FR") : "non renseignée"}`
                         : "Sélectionnez un client pour afficher son historique simplifié."}
                     </p>
-                  </div>
+                  </InsetCard>
 
                   <div className="max-h-[18rem] space-y-3 overflow-y-auto pr-1">
                     {selectedItems.length === 0 ? (
-                      <div className="rounded-lg border border-dashed border-border/70 bg-background/50 p-4">
+                      <InsetCard tone="dashed">
                         <p className="text-label text-foreground">Aucun item sélectionné</p>
                         <p className="mt-1 text-body-sm text-muted-foreground">
                           Ajoutez au moins un plat, dessert ou boisson depuis la recherche.
                         </p>
-                      </div>
+                      </InsetCard>
                     ) : (
                       selectedItems.map(({ menuItem, quantity, lineTotal }) => (
                         <div
