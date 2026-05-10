@@ -10,7 +10,6 @@ import {
   Dialog,
   DialogBody,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -177,15 +176,15 @@ export function OrderFormDialog({
     const normalizedSearch = normalize(customerQuery);
     const source = normalizedSearch
       ? customers.filter((customer) => {
-          const customerStatus = customerStatusLabels[customer.status];
+        const customerStatus = customerStatusLabels[customer.status];
 
-          return (
-            normalize(customer.name).includes(normalizedSearch) ||
-            normalize(customer.email).includes(normalizedSearch) ||
-            normalize(customer.phone).includes(normalizedSearch) ||
-            normalize(customerStatus).includes(normalizedSearch)
-          );
-        })
+        return (
+          normalize(customer.name).includes(normalizedSearch) ||
+          normalize(customer.email).includes(normalizedSearch) ||
+          normalize(customer.phone).includes(normalizedSearch) ||
+          normalize(customerStatus).includes(normalizedSearch)
+        );
+      })
       : customers;
 
     return source.slice(0, 6);
@@ -233,9 +232,6 @@ export function OrderFormDialog({
       <DialogContent className="max-w-6xl">
         <DialogHeader>
           <DialogTitle>Créer une commande</DialogTitle>
-          <DialogDescription>
-            Recherchez les plats disponibles, ajustez les quantités et capturez la date d’achat pour alimenter l’historique.
-          </DialogDescription>
         </DialogHeader>
 
         <form className="flex min-h-0 flex-1 flex-col" noValidate onSubmit={handleSubmit}>

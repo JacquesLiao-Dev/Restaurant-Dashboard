@@ -22,7 +22,7 @@ export function MenuItemImage({
   return (
     <div
       className={cn(
-        "relative overflow-hidden rounded-lg border border-border/70 bg-[radial-gradient(circle_at_top_left,_rgba(235,102,57,0.16),_transparent_52%),linear-gradient(135deg,_rgba(245,235,214,0.95),_rgba(255,250,246,0.92))]",
+        "relative overflow-hidden rounded-lg border border-border/70 bg-accent/35",
         className,
       )}
     >

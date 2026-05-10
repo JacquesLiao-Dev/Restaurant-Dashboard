@@ -192,7 +192,7 @@ export function MenuItemDialog({
               <div>
                 <p className="text-label text-foreground">Image locale</p>
                 <p className="text-body-sm text-muted-foreground">
-                  PNG, JPG/JPEG ou WEBP, 4 Mo maximum. Le backend enregistrera le fichier dans le dossier public.
+                  PNG, JPG/JPEG ou WEBP, 4 Mo maximum. PNG de préférence pour l'affichage.
                 </p>
               </div>
               <input
