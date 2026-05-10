@@ -38,10 +38,19 @@ export function SidebarPanel({
   return (
     <div className={className}>
       <div className="mb-8 flex items-start justify-between">
-        <div>
+        <div className="min-w-0 flex-1">
           <p className="text-xs font-semibold uppercase tracking-[0.24em] text-primary">{eyebrow}</p>
-          <h1 className="mt-2 text-2xl font-semibold tracking-tight">{title}</h1>
-          {description ? <p className="mt-1 text-body-sm text-muted-foreground">{description}</p> : null}
+          <h1
+            className="mt-2 max-w-full text-2xl font-semibold tracking-tight [overflow-wrap:anywhere]"
+            title={title}
+          >
+            {title}
+          </h1>
+          {description ? (
+            <p className="mt-1 max-w-full text-body-sm text-muted-foreground [overflow-wrap:anywhere]">
+              {description}
+            </p>
+          ) : null}
         </div>
 
         {showCloseButton && onClose ? (

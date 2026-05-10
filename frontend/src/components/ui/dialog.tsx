@@ -32,7 +32,7 @@ const DialogContent = React.forwardRef<
     <DialogOverlay />
     <DialogPrimitive.Content
       className={cn(
-        "fixed left-1/2 top-1/2 z-overlay w-[calc(100%-2rem)] max-w-xl -translate-x-1/2 -translate-y-1/2 rounded-xl border border-white/70 bg-white p-6 shadow-floating outline-none animate-dialog-in",
+        "fixed left-1/2 top-1/2 z-overlay flex max-h-[calc(100vh-2rem)] w-[calc(100%-2rem)] max-w-xl -translate-x-1/2 -translate-y-1/2 flex-col overflow-visible rounded-xl border border-white/70 bg-white p-6 shadow-floating outline-none animate-dialog-in",
         className,
       )}
       ref={ref}
@@ -49,12 +49,19 @@ const DialogContent = React.forwardRef<
 
 DialogContent.displayName = DialogPrimitive.Content.displayName;
 
+const DialogBody = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
+  <div className={cn("min-h-0 flex-1 overflow-x-visible overflow-y-auto px-2 pb-2", className)} {...props} />
+);
+
 const DialogHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
-  <div className={cn("space-y-2 pr-10", className)} {...props} />
+  <div className={cn("space-y-2 px-2 pr-10 pt-1", className)} {...props} />
 );
 
 const DialogFooter = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
-  <div className={cn("mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end", className)} {...props} />
+  <div
+    className={cn("mt-6 flex shrink-0 flex-col-reverse gap-3 px-2 pb-1 sm:flex-row sm:justify-end", className)}
+    {...props}
+  />
 );
 
 const DialogTitle = React.forwardRef<
@@ -76,6 +83,7 @@ const DialogDescription = React.forwardRef<
 DialogDescription.displayName = DialogPrimitive.Description.displayName;
 
 export {
+  DialogBody,
   Dialog,
   DialogClose,
   DialogContent,

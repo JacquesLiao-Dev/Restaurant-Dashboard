@@ -13,7 +13,7 @@ const customers: Customer[] = [
     name: "Camille Laurent",
     email: "camille@demo.fr",
     phone: "+33 6 12 34 56 78",
-    ordersCount: 14,
+    ordersCount: 18,
     lastOrderAt: new Date().toISOString(),
     status: "vip",
     createdAt: new Date().toISOString(),
@@ -23,7 +23,7 @@ const customers: Customer[] = [
     name: "Noah Bernard",
     email: "noah@demo.fr",
     phone: "+33 6 98 76 54 32",
-    ordersCount: 8,
+    ordersCount: 12,
     lastOrderAt: new Date(Date.now() - 86_400_000).toISOString(),
     status: "active",
     createdAt: new Date().toISOString(),
@@ -33,9 +33,39 @@ const customers: Customer[] = [
     name: "Emma Petit",
     email: "emma@demo.fr",
     phone: "+33 6 77 88 99 00",
-    ordersCount: 1,
-    lastOrderAt: null,
+    ordersCount: 4,
+    lastOrderAt: new Date(Date.now() - 259_200_000).toISOString(),
     status: "new",
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: "4a3158bc-d20b-43bf-99af-a5f29d40a7cc",
+    name: "Léa Moreau",
+    email: "lea@demo.fr",
+    phone: "+33 6 44 55 66 77",
+    ordersCount: 7,
+    lastOrderAt: new Date(Date.now() - 172_800_000).toISOString(),
+    status: "active",
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: "c4d2c0f5-9379-4f4e-96f7-58345fd3e53a",
+    name: "Sofia Nguyen",
+    email: "sofia@demo.fr",
+    phone: "+33 6 22 11 33 55",
+    ordersCount: 10,
+    lastOrderAt: new Date(Date.now() - 604_800_000).toISOString(),
+    status: "vip",
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: "319c9e81-97a0-4aef-bf88-b2cdfb52f1e9",
+    name: "Hugo Martin",
+    email: "hugo@demo.fr",
+    phone: "+33 6 90 10 20 30",
+    ordersCount: 2,
+    lastOrderAt: new Date(Date.now() - 7_776_000_000).toISOString(),
+    status: "inactive",
     createdAt: new Date().toISOString(),
   },
 ];
@@ -59,6 +89,12 @@ export class CustomersRepository {
 
   async findById(id: string) {
     return customers.find((customer) => customer.id === id) ?? null;
+  }
+
+  async findByName(name: string) {
+    return (
+      customers.find((customer) => customer.name.trim().toLowerCase() === name.trim().toLowerCase()) ?? null
+    );
   }
 
   async create(input: CreateCustomerInput) {
@@ -88,6 +124,22 @@ export class CustomersRepository {
     customers[index] = {
       ...customers[index],
       ...input,
+    };
+
+    return customers[index];
+  }
+
+  async recordOrderById(id: string, orderedAt: string) {
+    const index = customers.findIndex((customer) => customer.id === id);
+
+    if (index === -1) {
+      return null;
+    }
+
+    customers[index] = {
+      ...customers[index],
+      ordersCount: customers[index].ordersCount + 1,
+      lastOrderAt: orderedAt,
     };
 
     return customers[index];

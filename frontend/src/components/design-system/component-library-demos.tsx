@@ -27,33 +27,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-
-const customerRows = [
-  {
-    name: "Camille Laurent",
-    email: "camille@demo.fr",
-    status: "VIP",
-    volume: "14 commandes",
-  },
-  {
-    name: "Noah Bernard",
-    email: "noah@demo.fr",
-    status: "Actif",
-    volume: "8 commandes",
-  },
-];
+import { PaginatedTableShowcase } from "@/components/design-system/paginated-table-showcase";
 
 const orderCards = [
   {
@@ -135,74 +112,97 @@ export function FormFieldsShowcase() {
 
 export function DropdownsShowcase() {
   return (
-    <div className="grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
-      <Select
-        defaultValue="ready"
-        hint="Le select réutilise un menu personnalisé cohérent avec le dashboard."
-        label="Statut de commande"
-        options={[
-          { label: "En attente", value: "pending" },
-          { label: "En préparation", value: "preparing" },
-          { label: "Prête", value: "ready" },
-          { label: "Livrée", value: "delivered" },
-        ]}
-      />
+    <div className="grid gap-4">
+      <div className="grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
+        <Select
+          defaultValue="ready"
+          hint="Le select réutilise un menu personnalisé cohérent avec le dashboard."
+          label="Statut de commande"
+          options={[
+            { label: "En attente", value: "pending" },
+            { label: "En préparation", value: "preparing" },
+            { label: "Prête", value: "ready" },
+            { label: "Livrée", value: "delivered" },
+          ]}
+        />
 
-      <div className="space-y-2">
-        <p className="text-label text-foreground">Menu d’actions</p>
-        <div className="flex flex-wrap items-center gap-3">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline">
-                Actions rapides
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="start">
-              <DropdownMenuLabel>Client</DropdownMenuLabel>
-              <DropdownMenuItem>
-                <Users className="h-4 w-4 text-muted-foreground" />
-                Voir la fiche
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Pencil className="h-4 w-4 text-muted-foreground" />
-                Modifier
-                <DropdownMenuShortcut>⌘E</DropdownMenuShortcut>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Sparkles className="h-4 w-4 text-muted-foreground" />
-                Passer VIP
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="text-error focus:text-error data-[highlighted]:bg-error/8">
-                <Trash2 className="h-4 w-4" />
-                Supprimer
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+        <div className="space-y-2">
+          <p className="text-label text-foreground">Menu d’actions</p>
+          <div className="flex flex-wrap items-center gap-3">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline">
+                  Actions rapides
+                  <MoreHorizontal className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start">
+                <DropdownMenuLabel>Client</DropdownMenuLabel>
+                <DropdownMenuItem>
+                  <Users className="h-4 w-4 text-muted-foreground" />
+                  Voir la fiche
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Pencil className="h-4 w-4 text-muted-foreground" />
+                  Modifier
+                  <DropdownMenuShortcut>⌘E</DropdownMenuShortcut>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Sparkles className="h-4 w-4 text-muted-foreground" />
+                  Passer VIP
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem className="text-error focus:text-error data-[highlighted]:bg-error/8">
+                  <Trash2 className="h-4 w-4" />
+                  Supprimer
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
 
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button aria-label="Plus d'options" size="icon" variant="ghost">
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem>
-                <Search className="h-4 w-4 text-muted-foreground" />
-                Rechercher
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Filter className="h-4 w-4 text-muted-foreground" />
-                Filtrer
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Settings2 className="h-4 w-4 text-muted-foreground" />
-                Personnaliser
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button aria-label="Plus d'options" size="icon" variant="ghost">
+                  <MoreHorizontal className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem>
+                  <Search className="h-4 w-4 text-muted-foreground" />
+                  Rechercher
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Filter className="h-4 w-4 text-muted-foreground" />
+                  Filtrer
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Settings2 className="h-4 w-4 text-muted-foreground" />
+                  Personnaliser
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
+      </div>
+
+      <Select
+        defaultValue="18:30"
+        hint="Les listes longues restent scrollables pour éviter qu’un select n’envahisse tout l’écran."
+        label="Créneau de service"
+        options={Array.from({ length: 32 }, (_, index) => {
+          const hour = String(8 + Math.floor(index / 2)).padStart(2, "0");
+          const minute = index % 2 === 0 ? "00" : "30";
+          const value = `${hour}:${minute}`;
+
+          return {
+            label: value,
+            value,
+          };
+        })}
+      />
+      <div className="rounded-lg border border-border/70 bg-background/60 px-4 py-3">
+        <p className="text-body-sm text-muted-foreground">
+          Au-delà d’une dizaine d’options, le menu reste contraint en hauteur et passe en scroll interne.
+        </p>
       </div>
     </div>
   );
@@ -220,33 +220,7 @@ export function DialogsShowcase() {
 export function TablesListsShowcase() {
   return (
     <div className="space-y-4">
-      <div className="overflow-hidden rounded-lg border border-border/70">
-        <div className="overflow-x-auto">
-          <Table>
-            <TableCaption>Exemple de table utilisée pour le CRM ou les commandes.</TableCaption>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Client</TableHead>
-                <TableHead>Email</TableHead>
-                <TableHead>Statut</TableHead>
-                <TableHead>Volume</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {customerRows.map((row) => (
-                <TableRow key={row.email}>
-                  <TableCell>{row.name}</TableCell>
-                  <TableCell>{row.email}</TableCell>
-                  <TableCell>
-                    <Badge variant={row.status === "VIP" ? "warning" : "success"}>{row.status}</Badge>
-                  </TableCell>
-                  <TableCell>{row.volume}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
-      </div>
+      <PaginatedTableShowcase />
 
       <div className="grid gap-3 md:grid-cols-2">
         {orderCards.map((order) => (

@@ -1,6 +1,9 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
 import { SidebarPanel } from "@/components/layout/sidebar-panel";
+import { getSettings } from "@/lib/api";
 import { navigationItems } from "@/lib/constants/navigation";
 import { cn } from "@/lib/utils/cn";
 
@@ -11,6 +14,41 @@ type SidebarProps = {
 };
 
 export function Sidebar({ isOpen, onClose, pathname }: SidebarProps) {
+  const [restaurantName, setRestaurantName] = useState("Restaurant");
+
+  useEffect(() => {
+    let isMounted = true;
+
+    async function loadSettings() {
+      try {
+        const settings = await getSettings();
+
+        if (isMounted) {
+          setRestaurantName(settings.restaurantName);
+        }
+      } catch {
+        // Keep a stable fallback label if the settings endpoint is unavailable.
+      }
+    }
+
+    loadSettings();
+
+    function handleSettingsUpdated(event: Event) {
+      const detail = (event as CustomEvent<{ restaurantName?: string }>).detail;
+
+      if (isMounted && detail?.restaurantName) {
+        setRestaurantName(detail.restaurantName);
+      }
+    }
+
+    window.addEventListener("restaurant-settings-updated", handleSettingsUpdated);
+
+    return () => {
+      isMounted = false;
+      window.removeEventListener("restaurant-settings-updated", handleSettingsUpdated);
+    };
+  }, []);
+
   return (
     <>
       <div
@@ -30,12 +68,13 @@ export function Sidebar({ isOpen, onClose, pathname }: SidebarProps) {
       >
         <SidebarPanel
           eyebrow="Restaurant SaaS"
+          description="Dashboard restaurant"
           items={navigationItems}
           onClose={onClose}
           onNavigate={onClose}
           pathname={pathname}
           showCloseButton
-          title="Système de design"
+          title={restaurantName}
         />
       </aside>
     </>

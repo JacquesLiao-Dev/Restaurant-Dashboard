@@ -10,8 +10,8 @@ const manrope = Manrope({
 });
 
 export const metadata: Metadata = {
-  title: "Système de design Restaurant Dashboard",
-  description: "Fondation UI et bibliothèque de composants réutilisables pour un dashboard SaaS restaurant.",
+  title: "Restaurant Dashboard",
+  description: "Dashboard SaaS restaurant avec CRM, commandes, menu, paramètres et système de design.",
 };
 
 export default function RootLayout({

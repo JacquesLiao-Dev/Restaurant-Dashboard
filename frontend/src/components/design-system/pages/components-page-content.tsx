@@ -148,6 +148,7 @@ export function ComponentsPageContent() {
           guidelines={[
             "Sur mobile, prévoir un fallback carte ou un overflow maîtrisé.",
             "Le header doit rester explicite et stable.",
+            "Au-delà de 10 lignes visibles, activer une pagination cohérente.",
             "Ne jamais exposer une table vide sans explication.",
           ]}
           preview={<TablesListsShowcase />}

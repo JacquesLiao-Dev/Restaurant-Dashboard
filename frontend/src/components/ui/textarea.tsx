@@ -25,7 +25,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
           aria-invalid={Boolean(error)}
           className={cn(
             fieldControlStyles,
-            "min-h-[120px] resize-y py-3",
+            "min-h-[120px] resize-none py-3",
             error ? "border-error focus-visible:ring-error" : "",
             className,
           )}
